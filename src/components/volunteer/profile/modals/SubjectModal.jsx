@@ -1,10 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Trash2, Plus } from "lucide-react";
-
-const ALL_SUBJECTS = [
-  "Mathematics", "English", "Physics", "Chemistry", "Biology",
-  "History", "Geography", "Bangla", "ICT", "General Science"
-];
 
 export default function SubjectsModal({ profile, onClose, onSuccess }) {
   const [subjects, setSubjects] = useState(profile?.subjects || []);
@@ -12,6 +7,14 @@ export default function SubjectsModal({ profile, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [allSubjects, setAllSubjects] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/public/subjects")
+      .then((r) => r.json())
+      .then((d) => setAllSubjects(d.data || []));
+  }, []);
+  
   const handleAdd = async () => {
     if (!selected) return setError("Select a subject");
     const already = subjects.find((s) => s.name === selected);
@@ -43,10 +46,13 @@ export default function SubjectsModal({ profile, onClose, onSuccess }) {
 
   const handleDelete = async (subjectId) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/volunteers/subjects/${subjectId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/volunteers/subjects/${subjectId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
       const data = await res.json();
       if (data.success) {
         setSubjects((prev) => prev.filter((s) => s.id !== subjectId));
@@ -62,14 +68,19 @@ export default function SubjectsModal({ profile, onClose, onSuccess }) {
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-lg font-bold text-gray-800">Manage Subjects</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition"
+          >
             <X size={18} />
           </button>
         </div>
 
         <div className="space-y-2 mb-4">
           {subjects.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-4">No subjects added yet</p>
+            <p className="text-sm text-gray-400 text-center py-4">
+              No subjects added yet
+            </p>
           ) : (
             subjects.map((s) => (
               <div
@@ -90,17 +101,26 @@ export default function SubjectsModal({ profile, onClose, onSuccess }) {
 
         <div className="border-t border-gray-100 mb-4" />
 
-        <p className="text-xs font-semibold text-gray-400 uppercase mb-2">Add Subject</p>
+        <p className="text-xs font-semibold text-gray-400 uppercase mb-2">
+          Add Subject
+        </p>
         <div className="flex gap-2">
           <select
             value={selected}
-            onChange={(e) => { setSelected(e.target.value); setError(""); }}
+            onChange={(e) => {
+              setSelected(e.target.value);
+              setError("");
+            }}
             className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select subject</option>
-            {ALL_SUBJECTS.filter((s) => !subjects.find((ex) => ex.name === s)).map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
+            {allSubjects
+              .filter((s) => !subjects.find((ex) => ex.name === s))
+              .map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
           </select>
           <button
             onClick={handleAdd}

@@ -8,31 +8,17 @@ export default function VolunteerForm({
   handleRegister,
   removeAvailability,
 }) {
-  const SUBJECTS = [
-    { id: 1, name: "Mathematics" },
-    { id: 2, name: "English" },
-    { id: 3, name: "Physics" },
-    { id: 4, name: "Chemistry" },
-    { id: 5, name: "Biology" },
-    { id: 6, name: "ICT" },
-    { id: 7, name: "Bangla" },
-    { id: 8, name: "General Science" },
-  ];
+  const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
 
-  const CLASSES = [
-    { id: 1, name: "Class 1" },
-    { id: 2, name: "Class 2" },
-    { id: 3, name: "Class 3" },
-    { id: 4, name: "Class 4" },
-    { id: 5, name: "Class 5" },
-    { id: 6, name: "Class 6" },
-    { id: 7, name: "Class 7" },
-    { id: 8, name: "Class 8" },
-    { id: 9, name: "Class 9" },
-    { id: 10, name: "Class 10" },
-    { id: 11, name: "Class 11" },
-    { id: 12, name: "Class 12" },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:3000/api/public/subjects")
+      .then((r) => r.json())
+      .then((d) => setSubjects(d.data || []));
+    fetch("http://localhost:3000/api/public/classes")
+      .then((r) => r.json())
+      .then((d) => setClasses(d.data || []));
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -189,9 +175,9 @@ export default function VolunteerForm({
           Subjects
         </label>
         <div className="grid grid-cols-2 gap-2">
-          {SUBJECTS.map((sub) => (
+          {subjects.map((sub) => (
             <label
-              key={sub.id}
+              key={sub}
               className={`flex items-center gap-2 border rounded-lg px-3 py-2 text-sm cursor-pointer transition ${
                 formData.subject_names.includes(sub.name)
                   ? "bg-green-50 border-green-400 text-green-700"
@@ -200,12 +186,12 @@ export default function VolunteerForm({
             >
               <input
                 type="checkbox"
-                value={sub.name}
-                checked={formData.subject_names.includes(sub.name)}
+                value={sub}
+                checked={formData.subject_names.includes(sub)}
                 onChange={(e) => handleMultiSelect(e, "subject_names")}
                 className="accent-green-600"
               />
-              {sub.name}
+              {sub}
             </label>
           ))}
         </div>
@@ -217,23 +203,23 @@ export default function VolunteerForm({
           Classes
         </label>
         <div className="grid grid-cols-3 gap-2">
-          {CLASSES.map((cls) => (
+          {classes.map((cls) => (
             <label
-              key={cls.id}
+              key={cls}
               className={`flex items-center gap-2 border rounded-lg px-3 py-2 text-sm cursor-pointer transition ${
-                formData.class_names.includes(cls.name)
+                formData.class_names.includes(cls)
                   ? "bg-blue-50 border-blue-400 text-blue-700"
                   : "border-gray-200 text-gray-600 hover:border-gray-300"
               }`}
             >
               <input
                 type="checkbox"
-                value={cls.name}
-                checked={formData.class_names.includes(cls.name)}
+                value={cls}
+                checked={formData.class_names.includes(cls)}
                 onChange={(e) => handleMultiSelect(e, "class_names")}
                 className="accent-blue-600"
               />
-              {cls.name}
+              {cls}
             </label>
           ))}
         </div>

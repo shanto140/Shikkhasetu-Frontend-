@@ -1,22 +1,38 @@
 import { useState } from "react";
 import { X, Trash2, Plus, Pencil, Check } from "lucide-react";
+import { formatTime,formatDate} from "../../../../utils/timeFormat";
 
-const DAYS = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+const DAYS = [
+  "Saturday",
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+];
 
 export default function AvailabilityModal({ profile, onClose, onSuccess }) {
   const [slots, setSlots] = useState(profile?.availability || []);
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
-  const [newSlot, setNewSlot] = useState({ day_of_week: "", start_time: "", end_time: "" });
+  const [newSlot, setNewSlot] = useState({
+    day_of_week: "",
+    start_time: "",
+    end_time: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/volunteers/availability/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/volunteers/availability/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
       const data = await res.json();
       if (data.success) {
         setSlots((prev) => prev.filter((s) => s.id !== id));
@@ -43,16 +59,19 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
     try {
       setLoading(true);
       setError("");
-      const res = await fetch(`http://localhost:3000/api/volunteers/availability/${id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editForm),
-      });
+      const res = await fetch(
+        `http://localhost:3000/api/volunteers/availability/${id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(editForm),
+        },
+      );
       const data = await res.json();
       if (data.success) {
         setSlots((prev) =>
-          prev.map((s) => s.id === id ? { ...s, ...editForm } : s)
+          prev.map((s) => (s.id === id ? { ...s, ...editForm } : s)),
         );
         setEditingId(null);
         onSuccess();
@@ -68,18 +87,23 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
 
   const handleAdd = async () => {
     if (!newSlot.day_of_week) return setError("Select a day");
-    if (!newSlot.start_time || !newSlot.end_time) return setError("Start and end time required");
-    if (newSlot.start_time >= newSlot.end_time) return setError("End time must be after start time");
+    if (!newSlot.start_time || !newSlot.end_time)
+      return setError("Start and end time required");
+    if (newSlot.start_time >= newSlot.end_time)
+      return setError("End time must be after start time");
 
     try {
       setLoading(true);
       setError("");
-      const res = await fetch("http://localhost:3000/api/volunteers/availability", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newSlot),
-      });
+      const res = await fetch(
+        "http://localhost:3000/api/volunteers/availability",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newSlot),
+        },
+      );
       const data = await res.json();
       if (data.success) {
         setSlots((prev) => [...prev, { id: data.data?.insertId, ...newSlot }]);
@@ -100,8 +124,13 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[85vh] overflow-y-auto">
         {/* HEADER */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white">
-          <h2 className="text-lg font-bold text-gray-800">Manage Availability</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
+          <h2 className="text-lg font-bold text-gray-800">
+            Manage Availability
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition"
+          >
             <X size={18} />
           </button>
         </div>
@@ -109,7 +138,9 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
         <div className="p-6 space-y-3">
           {/* EXISTING SLOTS */}
           {slots.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-4">No availability added yet</p>
+            <p className="text-sm text-gray-400 text-center py-4">
+              No availability added yet
+            </p>
           ) : (
             slots.map((slot) => (
               <div key={slot.id} className="bg-gray-50 rounded-lg px-3 py-2">
@@ -118,22 +149,38 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
                   <div className="space-y-2">
                     <select
                       value={editForm.day_of_week}
-                      onChange={(e) => setEditForm({ ...editForm, day_of_week: e.target.value })}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          day_of_week: e.target.value,
+                        })
+                      }
                       className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+                      {DAYS.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
                     </select>
                     <div className="flex gap-2">
                       <input
                         type="time"
                         value={editForm.start_time}
-                        onChange={(e) => setEditForm({ ...editForm, start_time: e.target.value })}
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            start_time: e.target.value,
+                          })
+                        }
                         className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                       <input
                         type="time"
                         value={editForm.end_time}
-                        onChange={(e) => setEditForm({ ...editForm, end_time: e.target.value })}
+                        onChange={(e) =>
+                          setEditForm({ ...editForm, end_time: e.target.value })
+                        }
                         className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -157,8 +204,13 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
                   // VIEW MODE
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-gray-700">{slot.day_of_week}</p>
-                      <p className="text-xs text-gray-500">{slot.start_time} - {slot.end_time}</p>
+                      <p className="text-sm font-medium text-gray-700">
+                        {slot.day_of_week}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {formatTime(slot.start_time)} -{" "}
+                        {formatTime(slot.end_time)}
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
@@ -185,31 +237,48 @@ export default function AvailabilityModal({ profile, onClose, onSuccess }) {
           <div className="border-t border-gray-100" />
 
           {/* ADD NEW */}
-          <p className="text-xs font-semibold text-gray-400 uppercase">Add New Slot</p>
+          <p className="text-xs font-semibold text-gray-400 uppercase">
+            Add New Slot
+          </p>
           <select
             value={newSlot.day_of_week}
-            onChange={(e) => { setNewSlot({ ...newSlot, day_of_week: e.target.value }); setError(""); }}
+            onChange={(e) => {
+              setNewSlot({ ...newSlot, day_of_week: e.target.value });
+              setError("");
+            }}
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select day</option>
-            {DAYS.map((d) => <option key={d} value={d}>{d}</option>)}
+            {DAYS.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
           </select>
           <div className="flex gap-2">
             <div className="flex-1">
-              <label className="text-xs text-gray-500 mb-1 block">Start Time</label>
+              <label className="text-xs text-gray-500 mb-1 block">
+                Start Time
+              </label>
               <input
                 type="time"
                 value={newSlot.start_time}
-                onChange={(e) => setNewSlot({ ...newSlot, start_time: e.target.value })}
+                onChange={(e) =>
+                  setNewSlot({ ...newSlot, start_time: e.target.value })
+                }
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div className="flex-1">
-              <label className="text-xs text-gray-500 mb-1 block">End Time</label>
+              <label className="text-xs text-gray-500 mb-1 block">
+                End Time
+              </label>
               <input
                 type="time"
                 value={newSlot.end_time}
-                onChange={(e) => setNewSlot({ ...newSlot, end_time: e.target.value })}
+                onChange={(e) =>
+                  setNewSlot({ ...newSlot, end_time: e.target.value })
+                }
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
