@@ -1,4 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import ProfileSidebar from "../../components/volunteer/profile/ProfileSidebar";
 import {
   LogOut,
   LayoutDashboard,
@@ -11,6 +13,8 @@ import NotificationPanel from "../../components/shared/NotificationPanel";
 
 export default function Navbar() {
   const navigate = useNavigate();
+
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -48,7 +52,7 @@ export default function Navbar() {
 
       <div className="flex items-center gap-3 justify-end w-1/4">
         <NotificationPanel role="volunteer" />
-
+        {/* 
         <NavLink
           to="/volunteer/profile"
           className={({ isActive }) =>
@@ -60,7 +64,14 @@ export default function Navbar() {
           }
         >
           <User size={14} /> Profile
-        </NavLink>
+        </NavLink> */}
+
+        <button
+          onClick={() => setProfileOpen(true)}
+          className="flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition text-gray-600 border-gray-200 hover:bg-gray-50"
+        >
+          <User size={14} /> Profile
+        </button>
 
         <button
           onClick={handleLogout}
@@ -68,6 +79,11 @@ export default function Navbar() {
         >
           <LogOut size={14} /> Logout
         </button>
+
+        <ProfileSidebar
+          open={profileOpen}
+          onClose={() => setProfileOpen(false)}
+        />
       </div>
     </nav>
   );

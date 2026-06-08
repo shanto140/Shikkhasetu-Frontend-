@@ -8,14 +8,11 @@ import VolunteerDashboard from "./pages/volunteer/Dashboard.jsx";
 import Requests from "./pages/volunteer/Requests.jsx";
 import Accepted from "./pages/volunteer/Accepted.jsx";
 import VolunteerSessions from "./pages/volunteer/Sessions.jsx";
-import VolunteerProfile from "./pages/volunteer/Profile.jsx";
 
 import OrganizerLayout from "./pages/organizer/Layout.jsx";
 import OrganizerDashboard from "./pages/organizer/Dashboard.jsx";
 import OrganizerRequests from "./pages/organizer/Requests.jsx";
 import OrganizerSessions from "./pages/organizer/Sessions.jsx";
-import OrganizerProfile from "./pages/organizer/Profile.jsx";
-
 
 export default function AppRoutes() {
   return (
@@ -28,15 +25,12 @@ export default function AppRoutes() {
         <Route path="requests" element={<Requests />} />
         <Route path="accepted" element={<Accepted />} />
         <Route path="sessions" element={<VolunteerSessions />} />
-        <Route path="profile" element={<VolunteerProfile />} />
       </Route>
 
       <Route path="/organizer" element={<OrganizerLayout />}>
         <Route index element={<OrganizerDashboard />} />
         <Route path="requests" element={<OrganizerRequests />} />
         <Route path="sessions" element={<OrganizerSessions />} />
-        <Route path="profile" element={<OrganizerProfile />} />
-
       </Route>
     </Routes>
   );

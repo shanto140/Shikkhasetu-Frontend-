@@ -20,19 +20,27 @@ export default function VolunteerForm({
   ];
 
   const CLASSES = [
-    { id: 1, name: "Class 1" }, { id: 2, name: "Class 2" },
-    { id: 3, name: "Class 3" }, { id: 4, name: "Class 4" },
-    { id: 5, name: "Class 5" }, { id: 6, name: "Class 6" },
-    { id: 7, name: "Class 7" }, { id: 8, name: "Class 8" },
-    { id: 9, name: "Class 9" }, { id: 10, name: "Class 10" },
-    { id: 11, name: "Class 11" }, { id: 12, name: "Class 12" },
+    { id: 1, name: "Class 1" },
+    { id: 2, name: "Class 2" },
+    { id: 3, name: "Class 3" },
+    { id: 4, name: "Class 4" },
+    { id: 5, name: "Class 5" },
+    { id: 6, name: "Class 6" },
+    { id: 7, name: "Class 7" },
+    { id: 8, name: "Class 8" },
+    { id: 9, name: "Class 9" },
+    { id: 10, name: "Class 10" },
+    { id: 11, name: "Class 11" },
+    { id: 12, name: "Class 12" },
   ];
 
   return (
     <div className="space-y-4">
       <div className="text-center space-y-1">
         <h2 className="text-2xl font-bold text-gray-800">Volunteer Details</h2>
-        <p className="text-sm text-gray-500">Tell us about your academic background</p>
+        <p className="text-sm text-gray-500">
+          Tell us about your academic background
+        </p>
       </div>
 
       {/* UNIVERSITY */}
@@ -79,7 +87,9 @@ export default function VolunteerForm({
 
       {/* BIO */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Bio
+        </label>
         <textarea
           name="bio"
           value={formData.bio}
@@ -92,7 +102,9 @@ export default function VolunteerForm({
 
       {/* EXPERIENCE */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Experience
+        </label>
         <textarea
           name="experience_text"
           value={formData.experience_text}
@@ -119,7 +131,9 @@ export default function VolunteerForm({
 
       {/* UPAZILA */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Upazila</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Upazila
+        </label>
         <input
           name="upazila"
           value={formData.upazila}
@@ -131,7 +145,9 @@ export default function VolunteerForm({
 
       {/* ADDRESS */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Address
+        </label>
         <textarea
           name="address"
           value={formData.address}
@@ -144,7 +160,9 @@ export default function VolunteerForm({
 
       {/* TEACHING MODE */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Teaching Mode</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Teaching Mode
+        </label>
         <div className="flex gap-2">
           {["online", "offline", "both"].map((m) => (
             <button
@@ -167,22 +185,24 @@ export default function VolunteerForm({
 
       {/* SUBJECTS */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Subjects</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Subjects
+        </label>
         <div className="grid grid-cols-2 gap-2">
           {SUBJECTS.map((sub) => (
             <label
               key={sub.id}
               className={`flex items-center gap-2 border rounded-lg px-3 py-2 text-sm cursor-pointer transition ${
-                formData.subject_ids.includes(sub.id)
+                formData.subject_names.includes(sub.name)
                   ? "bg-green-50 border-green-400 text-green-700"
                   : "border-gray-200 text-gray-600 hover:border-gray-300"
               }`}
             >
               <input
                 type="checkbox"
-                value={sub.id}
-                checked={formData.subject_ids.includes(sub.id)}
-                onChange={(e) => handleMultiSelect(e, "subject_ids")}
+                value={sub.name}
+                checked={formData.subject_names.includes(sub.name)}
+                onChange={(e) => handleMultiSelect(e, "subject_names")}
                 className="accent-green-600"
               />
               {sub.name}
@@ -193,22 +213,24 @@ export default function VolunteerForm({
 
       {/* CLASSES */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Classes</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Classes
+        </label>
         <div className="grid grid-cols-3 gap-2">
           {CLASSES.map((cls) => (
             <label
               key={cls.id}
               className={`flex items-center gap-2 border rounded-lg px-3 py-2 text-sm cursor-pointer transition ${
-                formData.class_ids.includes(cls.id)
+                formData.class_names.includes(cls.name)
                   ? "bg-blue-50 border-blue-400 text-blue-700"
                   : "border-gray-200 text-gray-600 hover:border-gray-300"
               }`}
             >
               <input
                 type="checkbox"
-                value={cls.id}
-                checked={formData.class_ids.includes(cls.id)}
-                onChange={(e) => handleMultiSelect(e, "class_ids")}
+                value={cls.name}
+                checked={formData.class_names.includes(cls.name)}
+                onChange={(e) => handleMultiSelect(e, "class_names")}
                 className="accent-blue-600"
               />
               {cls.name}
@@ -219,11 +241,16 @@ export default function VolunteerForm({
 
       {/* AVAILABILITY */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Availability</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Availability
+        </label>
 
         <div className="space-y-3">
           {formData.availability.map((slot, index) => (
-            <div key={index} className="border border-gray-200 rounded-xl p-4 bg-gray-50 space-y-3">
+            <div
+              key={index}
+              className="border border-gray-200 rounded-xl p-4 bg-gray-50 space-y-3"
+            >
               <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-gray-700">
                   Slot {index + 1}
@@ -242,12 +269,24 @@ export default function VolunteerForm({
                 <select
                   value={slot.day_of_week}
                   onChange={(e) =>
-                    handleAvailabilityChange(index, "day_of_week", e.target.value)
+                    handleAvailabilityChange(
+                      index,
+                      "day_of_week",
+                      e.target.value,
+                    )
                   }
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Day</option>
-                  {["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"].map((d) => (
+                  {[
+                    "Saturday",
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                  ].map((d) => (
                     <option key={d}>{d}</option>
                   ))}
                 </select>
@@ -255,23 +294,35 @@ export default function VolunteerForm({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs text-gray-500 mb-1 block">Start Time</label>
+                  <label className="text-xs text-gray-500 mb-1 block">
+                    Start Time
+                  </label>
                   <input
                     type="time"
                     value={slot.start_time}
                     onChange={(e) =>
-                      handleAvailabilityChange(index, "start_time", e.target.value)
+                      handleAvailabilityChange(
+                        index,
+                        "start_time",
+                        e.target.value,
+                      )
                     }
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-500 mb-1 block">End Time</label>
+                  <label className="text-xs text-gray-500 mb-1 block">
+                    End Time
+                  </label>
                   <input
                     type="time"
                     value={slot.end_time}
                     onChange={(e) =>
-                      handleAvailabilityChange(index, "end_time", e.target.value)
+                      handleAvailabilityChange(
+                        index,
+                        "end_time",
+                        e.target.value,
+                      )
                     }
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />

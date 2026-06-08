@@ -31,8 +31,8 @@ export default function Register() {
 
     availability: [],
 
-    subject_ids: [],
-    class_ids: [],
+    subject_names: [],
+    class_names: [],
 
     institution_name: "",
     institution_type: "",
@@ -53,13 +53,13 @@ export default function Register() {
   };
 
   const handleMultiSelect = (e, field) => {
-    const value = Number(e.target.value);
+    const value = e.target.value;
 
     setFormData((prev) => ({
       ...prev,
       [field]: e.target.checked
         ? [...prev[field], value]
-        : prev[field].filter((id) => id !== value),
+        : prev[field].filter((v) => v !== value),
     }));
   };
 

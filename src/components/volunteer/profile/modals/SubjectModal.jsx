@@ -1,34 +1,34 @@
 import { useState } from "react";
 import { X, Trash2, Plus } from "lucide-react";
 
-const ALL_CLASSES = [
-  "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6",
-  "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"
+const ALL_SUBJECTS = [
+  "Mathematics", "English", "Physics", "Chemistry", "Biology",
+  "History", "Geography", "Bangla", "ICT", "General Science"
 ];
 
-export default function ClassesModal({ profile, onClose, onSuccess }) {
-  const [classes, setClasses] = useState(profile?.classes || []);
+export default function SubjectsModal({ profile, onClose, onSuccess }) {
+  const [subjects, setSubjects] = useState(profile?.subjects || []);
   const [selected, setSelected] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleAdd = async () => {
-    if (!selected) return setError("Select a class");
-    const already = classes.find((c) => c.name === selected);
-    if (already) return setError("Class already added");
+    if (!selected) return setError("Select a subject");
+    const already = subjects.find((s) => s.name === selected);
+    if (already) return setError("Subject already added");
 
     try {
       setLoading(true);
       setError("");
-      const res = await fetch("http://localhost:3000/api/volunteers/classes", {
+      const res = await fetch("http://localhost:3000/api/volunteers/subjects", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ class_name: selected }),
+        body: JSON.stringify({ subject_names: [selected] }),
       });
       const data = await res.json();
       if (data.success) {
-        setClasses((prev) => [...prev, { id: data.data?.insertId, name: selected }]);
+        setSubjects((prev) => [...prev, { id: null, name: selected }]);
         setSelected("");
         onSuccess();
       } else {
@@ -41,15 +41,15 @@ export default function ClassesModal({ profile, onClose, onSuccess }) {
     }
   };
 
-  const handleDelete = async (classId) => {
+  const handleDelete = async (subjectId) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/volunteers/classes/${classId}`, {
+      const res = await fetch(`http://localhost:3000/api/volunteers/subjects/${subjectId}`, {
         method: "DELETE",
         credentials: "include",
       });
       const data = await res.json();
       if (data.success) {
-        setClasses((prev) => prev.filter((c) => c.id !== classId));
+        setSubjects((prev) => prev.filter((s) => s.id !== subjectId));
         onSuccess();
       }
     } catch (err) {
@@ -60,27 +60,25 @@ export default function ClassesModal({ profile, onClose, onSuccess }) {
   return (
     <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
       <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
-        {/* HEADER */}
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-bold text-gray-800">Manage Classes</h2>
+          <h2 className="text-lg font-bold text-gray-800">Manage Subjects</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition">
             <X size={18} />
           </button>
         </div>
 
-        {/* EXISTING CLASSES */}
         <div className="space-y-2 mb-4">
-          {classes.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-4">No classes added yet</p>
+          {subjects.length === 0 ? (
+            <p className="text-sm text-gray-400 text-center py-4">No subjects added yet</p>
           ) : (
-            classes.map((c) => (
+            subjects.map((s) => (
               <div
-                key={c.id}
+                key={s.id || s.name}
                 className="flex items-center justify-between bg-gray-50 px-3 py-2 rounded-lg"
               >
-                <span className="text-sm text-gray-700">{c.name}</span>
+                <span className="text-sm text-gray-700">{s.name}</span>
                 <button
-                  onClick={() => handleDelete(c.id)}
+                  onClick={() => handleDelete(s.id)}
                   className="text-gray-300 hover:text-red-400 transition"
                 >
                   <Trash2 size={14} />
@@ -92,17 +90,16 @@ export default function ClassesModal({ profile, onClose, onSuccess }) {
 
         <div className="border-t border-gray-100 mb-4" />
 
-        {/* ADD NEW */}
-        <p className="text-xs font-semibold text-gray-400 uppercase mb-2">Add Class</p>
+        <p className="text-xs font-semibold text-gray-400 uppercase mb-2">Add Subject</p>
         <div className="flex gap-2">
           <select
             value={selected}
             onChange={(e) => { setSelected(e.target.value); setError(""); }}
             className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Select class</option>
-            {ALL_CLASSES.filter((c) => !classes.find((ex) => ex.name === c)).map((c) => (
-              <option key={c} value={c}>{c}</option>
+            <option value="">Select subject</option>
+            {ALL_SUBJECTS.filter((s) => !subjects.find((ex) => ex.name === s)).map((s) => (
+              <option key={s} value={s}>{s}</option>
             ))}
           </select>
           <button
@@ -116,7 +113,6 @@ export default function ClassesModal({ profile, onClose, onSuccess }) {
 
         {error && <p className="text-xs text-red-500 mt-2">{error}</p>}
 
-        {/* FOOTER */}
         <div className="mt-5">
           <button
             onClick={onClose}
