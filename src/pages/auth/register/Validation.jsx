@@ -30,7 +30,10 @@ export const validateGeneralUser = (data) => {
   }
 
   if (data.password.length < 6) {
-    return { field: "password", message: "Password must be at least 6 characters" };
+    return {
+      field: "password",
+      message: "Password must be at least 6 characters",
+    };
   }
 
   return null;
@@ -39,7 +42,10 @@ export const validateGeneralUser = (data) => {
 export const validateRoleUser = (data, role) => {
   if (role === "volunteer") {
     if (!data.university_name?.trim()) {
-      return { field: "university_name", message: "University name is required" };
+      return {
+        field: "university_name",
+        message: "University name is required",
+      };
     }
 
     if (!data.department?.trim()) {
@@ -54,18 +60,21 @@ export const validateRoleUser = (data, role) => {
       return { field: "teaching_mode", message: "Select teaching mode" };
     }
 
-    if (!data.subject_ids?.length) {
-      return { field: "subject_ids", message: "Select at least one subject" };
+    if (!data.subject_names?.length) {
+      return { field: "subject_names", message: "Select at least one subject" };
     }
 
-    if (!data.class_ids?.length) {
-      return { field: "class_ids", message: "Select at least one class" };
+    if (!data.class_names?.length) {
+      return { field: "class_names", message: "Select at least one class" };
     }
   }
 
   if (role === "organizer") {
     if (!data.institution_name?.trim()) {
-      return { field: "institution_name", message: "Institution name is required" };
+      return {
+        field: "institution_name",
+        message: "Institution name is required",
+      };
     }
 
     if (!data.district?.trim()) {

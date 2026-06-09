@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import ForgotPasswordModal from "../../components/auth/ForgotPasswordModal";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [forgotOpen, setForgotOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -58,7 +60,6 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md px-4">
         <div className="bg-white rounded-2xl shadow-md p-8 space-y-6">
-
           {/* HEADER */}
           <div className="text-center space-y-1">
             <h2 className="text-2xl font-bold text-gray-800">Welcome back</h2>
@@ -99,7 +100,7 @@ export default function Login() {
             <div className="flex justify-end">
               <button
                 type="button"
-                onClick={() => alert("Forgot password flow coming soon")}
+                onClick={() => setForgotOpen(true)}
                 className="text-xs text-blue-600 hover:underline"
               >
                 Forgot Password?
@@ -124,9 +125,11 @@ export default function Login() {
               Sign Up
             </Link>
           </p>
-
         </div>
+        
       </div>
+
+      {forgotOpen && <ForgotPasswordModal onClose={() => setForgotOpen(false)} />}
     </div>
   );
 }

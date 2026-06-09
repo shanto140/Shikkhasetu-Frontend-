@@ -46,7 +46,7 @@ export default function Navbar() {
       <div className="flex items-center gap-3 justify-end w-1/4">
         <NotificationPanel role="organizer" />
 
-        <NavLink
+        {/* <NavLink
           to="/organizer/profile"
           className={({ isActive }) =>
             `flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-lg border transition ${
@@ -55,9 +55,9 @@ export default function Navbar() {
                 : "text-gray-600 border-gray-200 hover:bg-gray-50"
             }`
           }
-        >
+        > */}
           <User size={14} /> Profile
-        </NavLink>
+        {/* </NavLink> */}
 
         <button
           onClick={logout}

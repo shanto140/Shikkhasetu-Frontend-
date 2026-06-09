@@ -40,9 +40,8 @@ export default function ProfileSidebar({ open, onClose }) {
         },
       );
       const data = await res.json();
-         console.log(data.data);
+      console.log(data.data);
       if (data.success) setProfile(data.data);
-   
     } catch (err) {
       console.error(err);
     }
@@ -81,8 +80,8 @@ export default function ProfileSidebar({ open, onClose }) {
       )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 bg-white shadow-xl z-50 w-72 transform transition-transform duration-300 rounded-bl-xl ${
+          open ? "translate-y-0" : "-translate-y-full"
         }`}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
@@ -94,7 +93,7 @@ export default function ProfileSidebar({ open, onClose }) {
             <X size={18} />
           </button>
         </div>
-           
+
         {profile && (
           <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
             <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center text-sm flex-shrink-0">
@@ -109,7 +108,6 @@ export default function ProfileSidebar({ open, onClose }) {
           </div>
         )}
 
-       
         <div className="py-2">
           {menuItems.map((item) => (
             <button
@@ -127,7 +125,6 @@ export default function ProfileSidebar({ open, onClose }) {
         </div>
       </div>
 
-    
       {activeModal === "details" && (
         <ProfileDetailsModal
           profile={profile}

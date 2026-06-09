@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 export default function VolunteerForm({
   formData,
   handleChange,
@@ -179,7 +181,7 @@ export default function VolunteerForm({
             <label
               key={sub}
               className={`flex items-center gap-2 border rounded-lg px-3 py-2 text-sm cursor-pointer transition ${
-                formData.subject_names.includes(sub.name)
+                formData.subject_names.includes(sub)
                   ? "bg-green-50 border-green-400 text-green-700"
                   : "border-gray-200 text-gray-600 hover:border-gray-300"
               }`}

@@ -13,6 +13,7 @@ import OrganizerLayout from "./pages/organizer/Layout.jsx";
 import OrganizerDashboard from "./pages/organizer/Dashboard.jsx";
 import OrganizerRequests from "./pages/organizer/Requests.jsx";
 import OrganizerSessions from "./pages/organizer/Sessions.jsx";
+import ResetPassword from "./pages/auth/ResetPassword.jsx";
 
 export default function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ export default function AppRoutes() {
         <Route path="requests" element={<OrganizerRequests />} />
         <Route path="sessions" element={<OrganizerSessions />} />
       </Route>
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }
